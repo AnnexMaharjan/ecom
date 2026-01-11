@@ -49,11 +49,6 @@ $conn->close();
             <span>Macroon Morning - Admin</span>
         </div>
 
-        <div class="search-container">
-            <input type="text" placeholder="Search...">
-            <div class="search-icon">🔍</div>
-        </div>
-
         <nav>
             <a href="../../index.php">Home</a>
             <a href="../menu.php">Menu</a>
@@ -119,9 +114,10 @@ $conn->close();
                 <button class="close-btn" onclick="closeModal()">&times;</button>
             </div>
 
-            <form id="productForm" class="modal-form" onsubmit="saveProduct(event)">
+            <form id="productForm" class="modal-form" onsubmit="saveProduct(event)" enctype="multipart/form-data">
                 <input type="hidden" id="productId" name="product_id">
                 <input type="hidden" id="action" name="action" value="create">
+                <input type="hidden" id="existingImage" name="existing_image">
 
                 <div class="form-row">
                     <label>Product Name *</label>
@@ -156,8 +152,9 @@ $conn->close();
                 </div>
 
                 <div class="form-row">
-                    <label>Image Name</label>
-                    <input type="text" id="productImage" name="image" placeholder="e.g., chocolate-cake.jpg">
+                    <label>Product Image</label>
+                    <input type="file" id="productImageFile" name="image_file" accept="image/*">
+                    <small id="currentImageText" style="color: #666; margin-top: 5px;"></small>
                 </div>
 
                 <div class="modal-actions">

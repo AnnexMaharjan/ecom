@@ -42,11 +42,6 @@ $conn->close();
             <span>Macroon Morning - Admin</span>
         </div>
 
-        <div class="search-container">
-            <input type="text" placeholder="Search...">
-            <div class="search-icon">🔍</div>
-        </div>
-
         <nav>
             <a href="../../index.php">Home</a>
             <a href="../menu.php">Menu</a>
@@ -103,6 +98,7 @@ $conn->close();
                                 <div class="action-buttons">
                                     <button class="edit-btn" onclick='viewOrderDetails(<?php echo $order['id']; ?>)'>View</button>
                                     <button class="edit-btn" onclick='updateOrderStatus(<?php echo $order['id']; ?>, "<?php echo $order['status']; ?>")'>Update Status</button>
+                                    <button class="delete-btn" onclick='deleteOrder(<?php echo $order['id']; ?>)'>Delete</button>
                                 </div>
                             </td>
                         </tr>

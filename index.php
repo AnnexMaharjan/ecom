@@ -1,3 +1,20 @@
+<?php
+require_once 'php/config.php';
+
+// Check if user is logged in
+$user = null;
+if (isset($_SESSION['user_id'])) {
+    $conn = getDBConnection();
+    $user_id = $_SESSION['user_id'];
+
+    $stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
+    $stmt->bind_param("i", $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
+    $conn->close();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -16,15 +33,13 @@
             <span>Macroon Morning</span>
         </div>
 
-        <div class="search-container">
-            <input type="text" placeholder="Search food...">
-            <div class="search-icon">🔍</div>
-        </div>
-
         <nav>
             <a href="index.php" class="active">Home</a>
             <a href="pages/menu.php">Menu</a>
             <a href="pages/orders.php">Orders</a>
+            <?php if ($user && $user['role'] === 'admin'): ?>
+                <a href="pages/admin/index.php">Dashboard</a>
+            <?php endif; ?>
             <a href="pages/cart.php" class="cart-link">
                 Cart
                 <span class="cart-badge">0</span>
@@ -32,13 +47,25 @@
         </nav>
 
         <div class="login-dropdown">
-            <button class="login-btn" onclick="toggleLoginDropdown()">Login</button>
-            <div class="dropdown-content" id="loginDropdown">
-                <a href="pages/login.php?type=customer">Customer Login</a>
-                <a href="pages/login.php?type=admin">Admin Login</a>
-                <a href="pages/login.php?type=vendor">Vendor Login</a>
-                <a href="pages/signup.php">Sign Up</a>
-            </div>
+            <?php if ($user): ?>
+                <div class="user-profile">
+                    <div class="user-name" onclick="toggleUserDropdown()">
+                        <?php echo htmlspecialchars($user['name']); ?>
+                    </div>
+                    <div class="dropdown-content" id="userDropdown">
+                        <a href="pages/orders.php">My Orders</a>
+                        <a href="#" onclick="logout()">Logout</a>
+                    </div>
+                </div>
+            <?php else: ?>
+                <button class="login-btn" onclick="toggleLoginDropdown()">Login</button>
+                <div class="dropdown-content" id="loginDropdown">
+                    <a href="pages/login.php?type=customer">Customer Login</a>
+                    <a href="pages/login.php?type=admin">Admin Login</a>
+                    <a href="pages/login.php?type=vendor">Vendor Login</a>
+                    <a href="pages/signup.php">Sign Up</a>
+                </div>
+            <?php endif; ?>
         </div>
     </header>
 

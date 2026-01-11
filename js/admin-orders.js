@@ -94,6 +94,34 @@ function saveOrderStatus(event) {
         });
 }
 
+function deleteOrder(orderId) {
+    if (!confirm('Are you sure you want to delete this order? This action cannot be undone.')) {
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('action', 'delete');
+    formData.append('order_id', orderId);
+
+    fetch('../../php/orders_crud.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                location.reload();
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred');
+        });
+}
+
 function closeModal() {
     document.getElementById('orderModal').classList.remove('show');
 }

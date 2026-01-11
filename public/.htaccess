@@ -1,0 +1,11 @@
+# Allow access to all files in public directory
+
+Options +Indexes
+Order allow,deny
+Allow from all
+
+# Enable image display
+
+<FilesMatch "\.(jpg|jpeg|png|gif|webp)$">
+Header set Content-Type image/\*
+</FilesMatch>

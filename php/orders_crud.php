@@ -63,6 +63,25 @@ switch ($action) {
         }
         break;
 
+    case 'delete':
+        $order_id = $_POST['order_id'] ?? 0;
+
+        // First delete order items
+        $stmt = $conn->prepare("DELETE FROM order_items WHERE order_id = ?");
+        $stmt->bind_param("i", $order_id);
+        $stmt->execute();
+
+        // Then delete the order
+        $stmt = $conn->prepare("DELETE FROM orders WHERE id = ?");
+        $stmt->bind_param("i", $order_id);
+
+        if ($stmt->execute()) {
+            echo json_encode(['success' => true, 'message' => 'Order deleted successfully']);
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Failed to delete order']);
+        }
+        break;
+
     default:
         echo json_encode(['success' => false, 'message' => 'Invalid action']);
         break;

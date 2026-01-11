@@ -4,7 +4,9 @@ function openAddModal() {
     document.getElementById('modalTitle').textContent = 'Add Product';
     document.getElementById('action').value = 'create';
     document.getElementById('productId').value = '';
+    document.getElementById('existingImage').value = '';
     document.getElementById('productForm').reset();
+    document.getElementById('currentImageText').textContent = '';
     document.getElementById('productModal').classList.add('show');
 }
 
@@ -17,7 +19,15 @@ function openEditModal(product) {
     document.getElementById('productPrice').value = product.price;
     document.getElementById('productCategory').value = product.category_id;
     document.getElementById('productRating').value = product.rating;
-    document.getElementById('productImage').value = product.image || '';
+    document.getElementById('existingImage').value = product.image || '';
+
+    // Show current image name
+    if (product.image) {
+        document.getElementById('currentImageText').textContent = 'Current: ' + product.image;
+    } else {
+        document.getElementById('currentImageText').textContent = '';
+    }
+
     document.getElementById('productModal').classList.add('show');
 }
 

@@ -49,11 +49,6 @@ $conn->close();
             <span>Macroon Morning - Admin</span>
         </div>
 
-        <div class="search-container">
-            <input type="text" placeholder="Search...">
-            <div class="search-icon">🔍</div>
-        </div>
-
         <nav>
             <a href="../../index.php">Home</a>
             <a href="../menu.php">Menu</a>

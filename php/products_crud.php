@@ -18,6 +18,54 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $action = $_POST['action'] ?? '';
 $conn = getDBConnection();
 
+// Function to handle image upload
+function handleImageUpload($file, $existingImage = '')
+{
+    $uploadDir = __DIR__ . '/../public/images/products/';
+
+    // If no new file uploaded, keep existing image
+    if (!isset($file) || $file['error'] === UPLOAD_ERR_NO_FILE) {
+        return $existingImage;
+    }
+
+    // Check for upload errors
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        return ['error' => 'Upload error occurred'];
+    }
+
+    // Validate file type
+    $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+    $fileType = mime_content_type($file['tmp_name']);
+
+    if (!in_array($fileType, $allowedTypes)) {
+        return ['error' => 'Invalid file type. Only JPG, PNG, GIF, and WEBP images are allowed'];
+    }
+
+    // Validate file size (max 5MB)
+    if ($file['size'] > 5 * 1024 * 1024) {
+        return ['error' => 'File size exceeds 5MB limit'];
+    }
+
+    // Generate unique filename
+    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $filename = uniqid('product_') . '_' . time() . '.' . $extension;
+    $targetPath = $uploadDir . $filename;
+
+    // Move uploaded file
+    if (move_uploaded_file($file['tmp_name'], $targetPath)) {
+        // Delete old image if exists and is different
+        if (!empty($existingImage) && $existingImage !== $filename) {
+            $oldPath = $uploadDir . $existingImage;
+            if (file_exists($oldPath)) {
+                unlink($oldPath);
+            }
+        }
+        return $filename;
+    } else {
+        return ['error' => 'Failed to move uploaded file'];
+    }
+}
+
 switch ($action) {
     case 'create':
         $name = $_POST['name'] ?? '';
@@ -25,11 +73,21 @@ switch ($action) {
         $price = $_POST['price'] ?? 0;
         $category_id = $_POST['category_id'] ?? 0;
         $rating = $_POST['rating'] ?? 0;
-        $image = $_POST['image'] ?? '';
 
         if (empty($name) || $price <= 0 || $category_id <= 0) {
             echo json_encode(['success' => false, 'message' => 'Name, price, and category are required']);
             exit;
+        }
+
+        // Handle image upload
+        $image = '';
+        if (isset($_FILES['image_file'])) {
+            $uploadResult = handleImageUpload($_FILES['image_file']);
+            if (is_array($uploadResult) && isset($uploadResult['error'])) {
+                echo json_encode(['success' => false, 'message' => $uploadResult['error']]);
+                exit;
+            }
+            $image = $uploadResult;
         }
 
         $stmt = $conn->prepare("INSERT INTO products (name, description, price, category_id, rating, image) VALUES (?, ?, ?, ?, ?, ?)");
@@ -49,11 +107,22 @@ switch ($action) {
         $price = $_POST['price'] ?? 0;
         $category_id = $_POST['category_id'] ?? 0;
         $rating = $_POST['rating'] ?? 0;
-        $image = $_POST['image'] ?? '';
+        $existingImage = $_POST['existing_image'] ?? '';
 
         if (empty($name) || $price <= 0 || $category_id <= 0) {
             echo json_encode(['success' => false, 'message' => 'Name, price, and category are required']);
             exit;
+        }
+
+        // Handle image upload
+        $image = $existingImage;
+        if (isset($_FILES['image_file'])) {
+            $uploadResult = handleImageUpload($_FILES['image_file'], $existingImage);
+            if (is_array($uploadResult) && isset($uploadResult['error'])) {
+                echo json_encode(['success' => false, 'message' => $uploadResult['error']]);
+                exit;
+            }
+            $image = $uploadResult;
         }
 
         $stmt = $conn->prepare("UPDATE products SET name = ?, description = ?, price = ?, category_id = ?, rating = ?, image = ? WHERE id = ?");
@@ -80,10 +149,23 @@ switch ($action) {
             exit;
         }
 
+        // Get product image before deleting
+        $stmt = $conn->prepare("SELECT image FROM products WHERE id = ?");
+        $stmt->bind_param("i", $product_id);
+        $stmt->execute();
+        $product = $stmt->get_result()->fetch_assoc();
+
         $stmt = $conn->prepare("DELETE FROM products WHERE id = ?");
         $stmt->bind_param("i", $product_id);
 
         if ($stmt->execute()) {
+            // Delete image file if exists
+            if (!empty($product['image'])) {
+                $imagePath = __DIR__ . '/../public/images/products/' . $product['image'];
+                if (file_exists($imagePath)) {
+                    unlink($imagePath);
+                }
+            }
             echo json_encode(['success' => true, 'message' => 'Product deleted successfully']);
         } else {
             echo json_encode(['success' => false, 'message' => 'Failed to delete product']);

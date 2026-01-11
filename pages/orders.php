@@ -72,15 +72,13 @@ if ($user) {
             <span>Macroon Morning</span>
         </div>
 
-        <div class="search-container">
-            <input type="text" placeholder="Search food...">
-            <div class="search-icon">🔍</div>
-        </div>
-
         <nav>
             <a href="../index.php">Home</a>
             <a href="menu.php">Menu</a>
             <a href="orders.php" class="active">Orders</a>
+            <?php if ($user && $user['role'] === 'admin'): ?>
+                <a href="admin/index.php">Dashboard</a>
+            <?php endif; ?>
             <a href="cart.php" class="cart-link">
                 Cart
                 <span class="cart-badge">0</span>
