@@ -52,11 +52,6 @@
             </div>
 
             <div class="summary-row">
-                <span>Tax (10%)</span>
-                <span id="tax">$0.00</span>
-            </div>
-
-            <div class="summary-row">
                 <span>Delivery Fee</span>
                 <span id="delivery">$3.99</span>
             </div>

@@ -87,7 +87,6 @@ $conn->close();
                         <th>Category</th>
                         <th>Price</th>
                         <th>Rating</th>
-                        <th>Popular</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -99,7 +98,6 @@ $conn->close();
                             <td><?php echo htmlspecialchars($product['category_name'] ?? 'N/A'); ?></td>
                             <td>$<?php echo number_format($product['price'], 2); ?></td>
                             <td><?php echo $product['rating']; ?> ⭐</td>
-                            <td><?php echo $product['is_popular'] ? '✅' : '❌'; ?></td>
                             <td>
                                 <div class="action-buttons">
                                     <button class="edit-btn" onclick='openEditModal(<?php echo json_encode($product); ?>)'>Edit</button>
@@ -160,13 +158,6 @@ $conn->close();
                 <div class="form-row">
                     <label>Image Name</label>
                     <input type="text" id="productImage" name="image" placeholder="e.g., chocolate-cake.jpg">
-                </div>
-
-                <div class="form-row">
-                    <label>
-                        <input type="checkbox" id="productPopular" name="is_popular" value="1">
-                        Mark as Popular
-                    </label>
                 </div>
 
                 <div class="modal-actions">

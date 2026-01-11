@@ -43,11 +43,7 @@ function displayOrderDetails(order) {
             
             <div class="summary-row">
                 <span>Subtotal</span>
-                <span>$${(order.total_amount - order.tax - order.delivery_fee).toFixed(2)}</span>
-            </div>
-            <div class="summary-row">
-                <span>Tax</span>
-                <span>$${parseFloat(order.tax).toFixed(2)}</span>
+                <span>$${(order.total_amount - order.delivery_fee).toFixed(2)}</span>
             </div>
             <div class="summary-row">
                 <span>Delivery Fee</span>

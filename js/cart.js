@@ -63,12 +63,10 @@ function removeItem(productId) {
 }
 
 function updateSummary(subtotal) {
-    const tax = subtotal * 0.1;
     const delivery = subtotal > 0 ? 3.99 : 0;
-    const total = subtotal + tax + delivery;
+    const total = subtotal + delivery;
 
     document.getElementById('subtotal').textContent = formatCurrency(subtotal);
-    document.getElementById('tax').textContent = formatCurrency(tax);
     document.getElementById('delivery').textContent = formatCurrency(delivery);
     document.getElementById('total').textContent = formatCurrency(total);
 }
@@ -91,14 +89,12 @@ function checkout() {
 
     // Submit order
     const subtotal = Cart.getSubtotal();
-    const tax = subtotal * 0.1;
     const delivery = 3.99;
-    const total = subtotal + tax + delivery;
+    const total = subtotal + delivery;
 
     const formData = new FormData();
     formData.append('user_id', user.id);
     formData.append('total_amount', total);
-    formData.append('tax', tax);
     formData.append('delivery_fee', delivery);
     formData.append('items', JSON.stringify(cart));
 

@@ -105,7 +105,7 @@
    - Order status
    - List of all items ordered
    - Quantities and prices
-   - Subtotal, tax, delivery fee
+   - Subtotal and delivery fee
    - Total amount
 
 ### Update Order Status
@@ -188,14 +188,12 @@
 - `category_id`: Foreign key to categories
 - `image`: Image filename
 - `rating`: Product rating (0-5)
-- `is_popular`: Boolean flag
 - `created_at`: Creation timestamp
 
 ### Orders Table
 - `id`: Order ID (auto-increment)
 - `user_id`: Foreign key to users
 - `total_amount`: Total order amount
-- `tax`: Tax amount
 - `delivery_fee`: Delivery charge
 - `status`: Order status
 - `delivery_address`: Delivery location

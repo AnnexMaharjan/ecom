@@ -18,7 +18,6 @@ function openEditModal(product) {
     document.getElementById('productCategory').value = product.category_id;
     document.getElementById('productRating').value = product.rating;
     document.getElementById('productImage').value = product.image || '';
-    document.getElementById('productPopular').checked = product.is_popular == 1;
     document.getElementById('productModal').classList.add('show');
 }
 
@@ -32,11 +31,6 @@ function saveProduct(event) {
 
     const form = event.target;
     const formData = new FormData(form);
-
-    // Ensure is_popular is set correctly
-    if (!document.getElementById('productPopular').checked) {
-        formData.delete('is_popular');
-    }
 
     fetch('../../php/products_crud.php', {
         method: 'POST',
