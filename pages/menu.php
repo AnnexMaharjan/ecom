@@ -75,7 +75,7 @@ $conn->close();
             <a href="../index.php">Home</a>
             <a href="menu.php" class="active">Menu</a>
             <a href="orders.php">Orders</a>
-            <?php if ($user && $user['role'] === 'admin'): ?>
+            <?php if ($user && $user['user_type'] === 'admin'): ?>
                 <a href="admin/index.php">Dashboard</a>
             <?php endif; ?>
             <a href="cart.php" class="cart-link">
@@ -135,7 +135,11 @@ $conn->close();
             <?php foreach ($products as $product): ?>
                 <div class="product-card" onclick="window.location.href='product.php?id=<?php echo $product['id']; ?>'">
                     <div class="product-image">
-                        <?php echo htmlspecialchars($product['name']); ?>
+                        <?php if (!empty($product['image']) && file_exists(__DIR__ . '/../public/images/products/' . $product['image'])): ?>
+                            <img src="../public/images/products/<?php echo htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                        <?php else: ?>
+                            <div style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 48px;">🍰</div>
+                        <?php endif; ?>
                     </div>
                     <div class="product-info">
                         <div class="product-name"><?php echo htmlspecialchars($product['name']); ?></div>

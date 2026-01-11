@@ -37,7 +37,7 @@ if (isset($_SESSION['user_id'])) {
             <a href="../index.php">Home</a>
             <a href="menu.php">Menu</a>
             <a href="orders.php">Orders</a>
-            <?php if ($user && $user['role'] === 'admin'): ?>
+            <?php if ($user && $user['user_type'] === 'admin'): ?>
                 <a href="admin/index.php">Dashboard</a>
             <?php endif; ?>
             <a href="cart.php" class="cart-link active">

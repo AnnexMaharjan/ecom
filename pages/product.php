@@ -72,7 +72,7 @@ $conn->close();
             <a href="../index.php">Home</a>
             <a href="menu.php" class="active">Menu</a>
             <a href="orders.php">Orders</a>
-            <?php if ($user && $user['role'] === 'admin'): ?>
+            <?php if ($user && $user['user_type'] === 'admin'): ?>
                 <a href="admin/index.php">Dashboard</a>
             <?php endif; ?>
             <a href="cart.php" class="cart-link">
@@ -106,7 +106,11 @@ $conn->close();
 
     <div class="product-detail">
         <div class="product-detail-image">
-            🍰
+            <?php if (!empty($product['image']) && file_exists(__DIR__ . '/../public/images/products/' . $product['image'])): ?>
+                <img src="../public/images/products/<?php echo htmlspecialchars($product['image']); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+            <?php else: ?>
+                <div style="display: flex; align-items: center; justify-content: center; height: 100%; font-size: 72px;">🍰</div>
+            <?php endif; ?>
         </div>
 
         <div class="product-detail-info">

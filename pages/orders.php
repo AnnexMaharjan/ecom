@@ -76,7 +76,7 @@ if ($user) {
             <a href="../index.php">Home</a>
             <a href="menu.php">Menu</a>
             <a href="orders.php" class="active">Orders</a>
-            <?php if ($user && $user['role'] === 'admin'): ?>
+            <?php if ($user && $user['user_type'] === 'admin'): ?>
                 <a href="admin/index.php">Dashboard</a>
             <?php endif; ?>
             <a href="cart.php" class="cart-link">

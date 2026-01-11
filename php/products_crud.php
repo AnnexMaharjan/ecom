@@ -1,4 +1,8 @@
 <?php
+// Suppress warnings to prevent breaking JSON output
+error_reporting(E_ERROR | E_PARSE);
+ini_set('display_errors', '0');
+
 require_once 'config.php';
 require_once 'auth.php';
 
@@ -35,10 +39,21 @@ function handleImageUpload($file, $existingImage = '')
 
     // Validate file type
     $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
-    $fileType = mime_content_type($file['tmp_name']);
-
-    if (!in_array($fileType, $allowedTypes)) {
+    $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+    
+    // Use file extension as fallback for Windows compatibility
+    $extension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    
+    if (!in_array($extension, $allowedExtensions)) {
         return ['error' => 'Invalid file type. Only JPG, PNG, GIF, and WEBP images are allowed'];
+    }
+    
+    // Try to get mime type, use extension check as fallback
+    if (function_exists('mime_content_type')) {
+        $fileType = @mime_content_type($file['tmp_name']);
+        if ($fileType && !in_array($fileType, $allowedTypes)) {
+            return ['error' => 'Invalid file type detected'];
+        }
     }
 
     // Validate file size (max 5MB)
@@ -47,7 +62,6 @@ function handleImageUpload($file, $existingImage = '')
     }
 
     // Generate unique filename
-    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
     $filename = uniqid('product_') . '_' . time() . '.' . $extension;
     $targetPath = $uploadDir . $filename;
 
