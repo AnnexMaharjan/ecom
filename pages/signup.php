@@ -1,10 +1,16 @@
+<?php
+$signup_type = isset($_GET['type']) ? $_GET['type'] : 'customer';
+$is_vendor_signup = ($signup_type === 'vendor');
+$page_title = $is_vendor_signup ? 'Vendor Registration' : 'Sign Up';
+$subtitle = $is_vendor_signup ? 'Register as a vendor to sell your products' : 'Create your account';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign Up - Macroon Morning</title>
+    <title><?php echo $page_title; ?> - Macroon Morning</title>
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="../css/auth.css">
 </head>
@@ -44,12 +50,18 @@
 
     <div class="auth-container">
         <div class="auth-box">
-            <h1>Sign Up</h1>
-            <p class="auth-subtitle">Create your account</p>
+            <h1><?php echo $is_vendor_signup ? '🏪 ' . $page_title : $page_title; ?></h1>
+            <p class="auth-subtitle"><?php echo $subtitle; ?></p>
+            <?php if ($is_vendor_signup): ?>
+                <div class="message info" style="margin-bottom: 20px; background-color: #fff3cd; border-color: #ffc107; color: #856404;">
+                    ℹ️ Your vendor account will be reviewed by our admin team. You'll receive access within 24-48 hours after approval.
+                </div>
+            <?php endif; ?>
 
             <div id="messageContainer"></div>
 
             <form id="signupForm" onsubmit="handleSignup(event)">
+                <input type="hidden" name="user_type" value="<?php echo htmlspecialchars($signup_type); ?>">
                 <div class="form-group">
                     <label>Full Name</label>
                     <div class="input-wrapper">
@@ -97,8 +109,14 @@
             </form>
 
             <div class="auth-footer">
-                Already have an account? <a href="login.php">Login</a>
+                Already have an account? <a href="login.php<?php echo $is_vendor_signup ? '?type=vendor' : ''; ?>">Login</a>
             </div>
+
+            <?php if (!$is_vendor_signup): ?>
+                <div class="auth-footer" style="margin-top: 10px; padding-top: 15px; border-top: 1px solid #e0e0e0;">
+                    Want to sell on our platform? <a href="signup.php?type=vendor" style="color: #ff6b35; font-weight: 600;">Become a Vendor</a>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 

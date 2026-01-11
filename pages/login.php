@@ -85,6 +85,12 @@ $user_type_label = ucfirst($user_type);
             <div class="auth-footer">
                 Don't have an account? <a href="signup.php">Sign up</a>
             </div>
+
+            <?php if ($user_type !== 'vendor'): ?>
+                <div class="auth-footer" style="margin-top: 10px; padding-top: 15px; border-top: 1px solid #e0e0e0;">
+                    Want to sell on our platform? <a href="signup.php?type=vendor" style="color: #ff6b35; font-weight: 600;">Become a Vendor</a>
+                </div>
+            <?php endif; ?>
         </div>
     </div>
 

@@ -39,6 +39,8 @@ if (isset($_SESSION['user_id'])) {
             <a href="pages/orders.php">Orders</a>
             <?php if ($user && $user['user_type'] === 'admin'): ?>
                 <a href="pages/admin/index.php">Dashboard</a>
+            <?php elseif ($user && $user['user_type'] === 'vendor'): ?>
+                <a href="pages/vendor/index.php">Vendor Dashboard</a>
             <?php endif; ?>
             <a href="pages/cart.php" class="cart-link">
                 Cart

@@ -74,6 +74,8 @@ $conn->close();
             <a href="orders.php">Orders</a>
             <?php if ($user && $user['user_type'] === 'admin'): ?>
                 <a href="admin/index.php">Dashboard</a>
+            <?php elseif ($user && $user['user_type'] === 'vendor'): ?>
+                <a href="vendor/index.php">Vendor Dashboard</a>
             <?php endif; ?>
             <a href="cart.php" class="cart-link">
                 Cart
