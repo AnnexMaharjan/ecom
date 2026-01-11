@@ -2,7 +2,7 @@
 -- Run this script on your existing database to add new fields
 -- Date: January 11, 2026
 
-USE macroon_morning;
+USE ecommercedb;
 
 -- Add is_approved field to users table
 -- Vendors will need approval, customers and admins are auto-approved

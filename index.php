@@ -80,7 +80,7 @@ if (isset($_SESSION['user_id'])) {
             <button class="order-btn" onclick="window.location.href='pages/menu.php'">Order Now</button>
         </div>
 
-        <div class="hero-image">
+        <div class="hero-image" style="background-image: url('https://www.partstown.com/about-us/wp-content/uploads/2022/10/Most-Profitable-Baked-Goods-for-Bakeries-Donuts.jpg');">
             Delicious Food
         </div>
     </section>

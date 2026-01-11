@@ -1,10 +1,10 @@
 <?php
 // Database configuration
 // Update these values according to your friend's laptop database settings
-define('DB_HOST', 'YOUR_FRIENDS_LAPTOP_IP'); // e.g., '192.168.1.100' or 'localhost' if same machine
+define('DB_HOST', 'localhost'); // e.g., '192.168.1.100' or 'localhost' if same machine
 define('DB_USER', 'root'); // Default XAMPP user
-define('DB_PASS', ''); // Default XAMPP password is empty
-define('DB_NAME', 'macroon_morning');
+define('DB_PASS', 'nx_stealth'); // Default XAMPP password is empty
+define('DB_NAME', 'ecommercedb'); // Your database name
 
 // Create database connection
 function getDBConnection()
