@@ -29,7 +29,9 @@ if (isset($_SESSION['user_id'])) {
 <body>
     <header>
         <div class="logo">
-            <span class="logo-icon">🍰</span>
+            <span class="logo-icon" ></span>
+            <img src="public/images/products/logo.png" alt="Macroon Morning Logo" width="150" height="auto">
+
             <span>Macroon Morning</span>
         </div>
 
