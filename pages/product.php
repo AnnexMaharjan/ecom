@@ -64,8 +64,8 @@ $conn->close();
 <body>
     <header>
         <div class="logo">
-            <span class="logo-icon">🍰</span>
-            <span>Macroon Morning</span>
+            <img src="../public/images/products/logo.png" alt="Macroon Morning Logo" width="150" height="auto">
+            <span class="brand">Macroon Morning</span>
         </div>
 
         <nav>
